@@ -38,6 +38,7 @@ class Board extends React.Component {
     this.state = {
       squares: Array(9).fill(null),
       xTurn: true,
+      isTorus: false,
     };
 
     this.changeSize = this.changeSize.bind(this);
@@ -59,7 +60,7 @@ class Board extends React.Component {
   // either 'X' or 'O', depending on whose turn it is
   squareClick(i) {
     const squares = this.state.squares.slice();
-    if (calculateWinner(squares) || squares[i]){
+    if (calculateWinner(squares, this.state.isTorus) || squares[i]){
       return;
     }
     squares[i] = this.state.xTurn ? 'X' : 'O';
@@ -98,7 +99,7 @@ class Board extends React.Component {
 
     // see if there is a winner yet
     // if so, change the status to display the winner
-    var winner = calculateWinner(squares);
+    var winner = calculateWinner(squares, this.state.isTorus);
     if (winner) {
       status = "Winner: " + winner;
     }
@@ -140,6 +141,8 @@ class Board extends React.Component {
             {renderSquareMatrix[rowNumber]}
           </div>
         )}
+      <br/>
+      {this.state.isTorus ? "Playing on a torus" : ""}
         </div>
 
        <br/>
@@ -158,16 +161,30 @@ class Board extends React.Component {
           {numCellsOptions}
         </select>
         <br/>
+        Change the type of board:
+        <br/>
+        <button onClick={
+          () => this.state.isTorus ?
+            this.setState({isTorus: false})
+            : this.setState({isTorus: true})
+          }
+        >
+          {this.state.isTorus ? "Normal Board" : "Torus Board"}
+        </button>
+        {this.state.isTorus == true}
       </div>
     </div>
     );
   }
 }
 
-function calculateWinner(squares) {
+function calculateWinner(squares, isTorus) {
   const sideLength = Math.sqrt(squares.length);
   const lines = [];
 
+  // on a 0x0 board, the first player automatically wins
+  // TODO: make this take into account which player goes first
+  // (i.e. read from xTurn)
   if (sideLength == 0){
     return 'X';
   }
@@ -190,10 +207,47 @@ function calculateWinner(squares) {
 
     // get diagonal lines
     diagonal.push(i * (sideLength + 1));
-    counterDiagonal.push(sideLength - 1 + i * (sideLength - 1));
+    counterDiagonal.push( (1+i) * (sideLength - 1));
   }
   lines.push(diagonal);
   lines.push(counterDiagonal);
+  
+  // if the game is played on a torus
+  // and the game is at least 3x3 (otherwise no change)
+  // add some lines to the set
+  // i.e. for a 3x3, add 057, 138, 156, 237
+  // 0 1 2
+  // 3 4 5
+  // 6 7 8
+  if (isTorus && squares.length > 4){
+    // keep track of diagonals by where they start in the top column j
+    for (let j = 1; j < sideLength; j++){
+      let torusDiagonal = [];
+      let torusCounterDiagonal = [];
+
+      // the first sideLength - j entries follow the same pattern
+      // as the normal diagonal and counterDiagonals, except
+      // shifted up or down by j
+      for (let i = 0; i < sideLength - j; i++){
+        torusDiagonal.push( i * (sideLength + 1) + j );
+        torusCounterDiagonal.push( (1 + i) * (sideLength - 1) - j );
+      }
+
+      // the last j entries follow the same pattern as the first
+      // sideLength - j entries, except shifted up or down by sideLength
+      for (let i = sideLength - j; i < sideLength; i++){
+        torusDiagonal.push( i * (sideLength + 1) + j - sideLength );
+        torusCounterDiagonal.push( (1 + i) * (sideLength - 1) - j + sideLength );
+      }
+
+      //alert("diagonal " + j + " : " + torusDiagonal);
+      //alert("counterDiagonal " + j + " : " + torusCounterDiagonal);
+
+      // add the new torus lines to the list of lines
+      lines.push(torusDiagonal);
+      lines.push(torusCounterDiagonal);
+    }
+  }
 
   // determine if there is a winner
   for (let i = 0; i < lines.length; i++) {
@@ -218,7 +272,6 @@ function calculateWinner(squares) {
     return null;
   }
 
-  
   for (let i = 0; i < lines.length; i++) {
     const lineCoords = lines[i];
     const lineVals = lineCoords.map(coord => squares[coord]);
