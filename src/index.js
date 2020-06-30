@@ -39,6 +39,7 @@ class Board extends React.Component {
       squares: Array(9).fill(null),
       xTurn: true,
       isTorus: false,
+      extraBoard: false,
     };
 
     this.changeSize = this.changeSize.bind(this);
@@ -124,6 +125,24 @@ class Board extends React.Component {
       renderSquareMatrix.push(rowItems);
     }
 
+    // draw the board
+    const drawBoard = (
+      cellNumList.map((rowNumber) =>
+        <div className="board-row" key={rowNumber}>
+          {renderSquareMatrix[rowNumber]}
+        </div>
+      )
+    );
+
+    // draw the helper board with "board-row-greyed" class
+    const drawHelperBoard = (
+      cellNumList.map((rowNumber) =>
+        <div className="board-row board-row-greyed" key={rowNumber}>
+          {renderSquareMatrix[rowNumber]}
+        </div>
+      )
+    );
+
     // give 10 options for cell numbers
     const numCellsOptions = [];
     for (let i = 0; i < 10; i++){
@@ -136,12 +155,11 @@ class Board extends React.Component {
         {/*display the current status of the game */}
         <div className="status">{status}</div>
         {/*display the board squares*/}
-        {cellNumList.map((rowNumber) =>
-          <div className="board-row" key={rowNumber}>
-            {renderSquareMatrix[rowNumber]}
-          </div>
-        )}
+        {drawBoard}
+        {/*draw the helper board if desired*/}
+        {this.state.extraBoard ? drawHelperBoard : ""}
       <br/>
+      {/*Show "playing on a torus" if true*/}
       {this.state.isTorus ? "Playing on a torus" : ""}
         </div>
 
@@ -163,15 +181,30 @@ class Board extends React.Component {
         <br/>
         Change the type of board:
         <br/>
+        {/*choose torus board or normal board*/}
         <button onClick={
           () => this.state.isTorus ?
-            this.setState({isTorus: false})
+            this.setState({isTorus: false, extraBoard: false})
             : this.setState({isTorus: true})
           }
         >
           {this.state.isTorus ? "Normal Board" : "Torus Board"}
         </button>
-        {this.state.isTorus == true}
+
+        <br/>
+        <br/>
+        {/*if the board is a torus board, you can choose to show the extra board
+          or not*/}
+        {this.state.isTorus ?
+          <button onClick={
+            () => this.state.extraBoard ?
+              this.setState({extraBoard: false})
+              : this.setState({extraBoard: true})
+          }>
+          Show helper board
+        </button>
+        : ""
+        }
       </div>
     </div>
     );
@@ -185,7 +218,7 @@ function calculateWinner(squares, isTorus) {
   // on a 0x0 board, the first player automatically wins
   // TODO: make this take into account which player goes first
   // (i.e. read from xTurn)
-  if (sideLength == 0){
+  if (sideLength === 0){
     return 'X';
   }
 
@@ -211,7 +244,7 @@ function calculateWinner(squares, isTorus) {
   }
   lines.push(diagonal);
   lines.push(counterDiagonal);
-  
+
   // if the game is played on a torus
   // and the game is at least 3x3 (otherwise no change)
   // add some lines to the set

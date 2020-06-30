@@ -13,6 +13,11 @@ ol, ul {
   display: table;
 }
 
+.board-row-greyed .square {
+  border-color: gray;
+  color: gray;
+}
+
 .status {
   margin-bottom: 10px;
 }
