@@ -43,6 +43,7 @@ class Board extends React.Component {
     };
 
     this.changeSize = this.changeSize.bind(this);
+    this.opponentMove = this.opponentMove.bind(this);
   }
 
   // draw a square with value squares[i]
@@ -87,6 +88,98 @@ class Board extends React.Component {
       squares:Array(squaresLength).fill(null),
       xTurn: true,
     });
+  }
+
+  opponentMove() {
+    const squares = this.state.squares.slice();
+    const sideLength = Math.sqrt(squares.length);
+    const lines = getLines(this.state.squares, this.state.isTorus);
+
+    const defenseLines = [];
+    const possibleLines = [];
+    for (let i = 0; i < lines.length; i++){
+      const lineCoords = lines[i];
+      const lineVals = lineCoords.map(coord => squares[coord]);
+      // if there is no X in a line, it could be used for offense
+      if ( !lineVals.some( (val) => val === 'X')){
+        possibleLines.push(lineCoords);
+      }
+      // if there is an X in a line but no O, it could be used for defense
+      else if ( !lineVals.some( (val) => val === 'O')){
+        defenseLines.push(lineCoords);
+      }
+    }
+
+    let worstLine = defenseLines[0];
+    let maxX = 0;
+    for (let i = 0; i < defenseLines.length; i++){
+      let defenseLine = defenseLines[i];
+
+      let numX = 0;
+      for (let j = 0; j < defenseLine.length; j++){
+        if( squares[defenseLine[j]] === 'X'){
+          numX += 1;
+        }
+      }
+      if (numX > maxX){
+        maxX = numX;
+        worstLine = defenseLine;
+      }
+    }
+
+    let bestLine = possibleLines[0];
+    let maxO = 0;
+    for (let i = 0; i < possibleLines.length; i++){
+      let possibleLine = possibleLines[i];
+
+      let numO = 0;
+      for (let j = 0; j < possibleLine.length; j++){
+        if ( squares[possibleLine[j]] === 'O'){
+          numO += 1;
+        }
+      }
+      if ( numO > maxO){
+        maxO = numO;
+        bestLine = possibleLine;
+      }
+    }
+
+    if (maxX === sideLength - 1 || possibleLines.length === 0){
+      bestLine = worstLine;
+    }
+
+    for (let i = 0; i < sideLength; i++){
+      if (squares[bestLine[i]] == null){
+        this.squareClick(bestLine[i]);
+        return;
+      }
+    }
+  }
+
+    /*for (let i = 0; i < lines.length; i++){
+      const lineCoords = lines[i];
+      // list of values at the line coordinate positions
+      const lineVals = lineCoords.map(coord => squares[coord]);
+      if ( lineVals.some( (val) => val == 'X') ){
+        continue;
+      }
+      // (else)
+      for (let j = 0; j < sideLength; j++){
+        if ( lineVals[lineCoords[j]] == null ){
+          this.squareClick(lineCoords[j]);
+          alert("null found");
+          return;
+        }
+      }
+    }
+  }*/
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.xTurn !== prevState.xTurn){
+      if (!this.state.xTurn) {
+        this.opponentMove();
+      }
+    }
   }
 
   render() {
@@ -211,16 +304,10 @@ class Board extends React.Component {
   }
 }
 
-function calculateWinner(squares, isTorus) {
+// find all lines in the game as an array
+function getLines(squares, isTorus) {
   const sideLength = Math.sqrt(squares.length);
   const lines = [];
-
-  // on a 0x0 board, the first player automatically wins
-  // TODO: make this take into account which player goes first
-  // (i.e. read from xTurn)
-  if (sideLength === 0){
-    return 'X';
-  }
 
   // arrays to store diagonal and counter diagonal lines
   const diagonal = [];
@@ -280,6 +367,20 @@ function calculateWinner(squares, isTorus) {
       lines.push(torusDiagonal);
       lines.push(torusCounterDiagonal);
     }
+  }
+  return lines;
+}
+
+
+function calculateWinner(squares, isTorus) {
+  const sideLength = Math.sqrt(squares.length);
+  const lines = getLines(squares, isTorus);
+
+  // on a 0x0 board, the first player automatically wins
+  // TODO: make this take into account which player goes first
+  // (i.e. read from xTurn)
+  if (sideLength === 0){
+    return 'X';
   }
 
   // determine if there is a winner
