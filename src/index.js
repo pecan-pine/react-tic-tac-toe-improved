@@ -143,8 +143,9 @@ class Board extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    let winner = calculateWinner(this.state.squares, this.state.isTorus);
     if (this.state.xTurn !== prevState.xTurn){
-      if (!this.state.xTurn) {
+      if (!this.state.xTurn && !winner) {
         this.opponentMove();
       }
     }
