@@ -1,13 +1,35 @@
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px; }
+  margin: 20px;
+  background-image: url("stars.jpg");
+  background-size: cover;
+}
+
+#fullBoard {
+  background-color: lightblue;
+  border: 3px solid black;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: max(auto, 550px);
+  width: 550px;
+  padding-top: 30px;
+  padding-left: 30px;
+  padding: 30px;
+  border-radius: 20px;
+}
 
 ol, ul {
   padding-left: 30px; }
 
-#boardControls {
+/*#boardControls {
   position:fixed;
-  left: 350px;}
+  left: 450px;} */
+#boardControls {
+  float: right;
+  height: 500px;
+}
 
 .controlDesc {
   display: inline-block;
@@ -16,7 +38,7 @@ ol, ul {
 
 #boardControls > button, select {
   margin-bottom: 25px;
-  border-radius: 50px;
+  border-radius: 5px;
   background-color: orange;
 }
 
@@ -42,7 +64,8 @@ ol, ul {
   margin-bottom: 10px; }
 
 .square {
-  background: #fff;
+  /* background: #fff; */
+  background: rgb(225, 225, 225);
   border: 2px solid black;
   float: left;
   font-size: 24px;
