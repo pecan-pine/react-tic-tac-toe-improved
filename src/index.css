@@ -1,26 +1,45 @@
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
-}
+  margin: 20px; }
 
 ol, ul {
-  padding-left: 30px;
+  padding-left: 30px; }
+
+#boardControls {
+  position:fixed;
+  left: 350px;}
+
+.controlDesc {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+#boardControls > button, select {
+  margin-bottom: 25px;
+  border-radius: 50px;
+  background-color: orange;
+}
+
+#torusBoardButton {
+  margin-bottom: 0px;
+}
+
+#helperBoardButton {
+  position: relative;
+  top: -25px;
 }
 
 .board-row:after {
   clear: both;
   content: "";
-  display: table;
-}
+  display: table; }
 
 .board-row-greyed .square {
   border-color: gray;
-  color: gray;
-}
+  color: gray; }
 
 .status {
-  margin-bottom: 10px;
-}
+  margin-bottom: 10px; }
 
 .square {
   background: #fff;
@@ -34,22 +53,17 @@ ol, ul {
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 34px;
-}
+  width: 34px; }
 
 .square:focus {
-  outline: none;
-}
+  outline: none; }
 
 .kbd-navigation .square:focus {
-  background: #ddd;
-}
+  background: #ddd; }
 
 .game {
   display: flex;
-  flex-direction: row;
-}
+  flex-direction: row; }
 
 .game-info {
-  margin-left: 20px;
-}
+  margin-left: 20px; }

@@ -16,20 +16,6 @@ function Square(props) {
   );
 }
 
-function squareMatrixConstructor(sideLength) {
-  let squareMatrix = [];
-  for (let row = 0; row < sideLength; row++){
-    let rowItems = [];
-    for (let col = 0; col < sideLength; col++){
-      rowItems.push(["(",row, col,")"], null);
-    }
-    rowItems.push(<br key={row}/>);
-    squareMatrix.push(rowItems);
-  }
-  console.log(squareMatrix);
-  return squareMatrix;
-}
-
 // the board and control buttons
 
 class Board extends React.Component {
@@ -156,24 +142,6 @@ class Board extends React.Component {
     }
   }
 
-    /*for (let i = 0; i < lines.length; i++){
-      const lineCoords = lines[i];
-      // list of values at the line coordinate positions
-      const lineVals = lineCoords.map(coord => squares[coord]);
-      if ( lineVals.some( (val) => val == 'X') ){
-        continue;
-      }
-      // (else)
-      for (let j = 0; j < sideLength; j++){
-        if ( lineVals[lineCoords[j]] == null ){
-          this.squareClick(lineCoords[j]);
-          alert("null found");
-          return;
-        }
-      }
-    }
-  }*/
-
   componentDidUpdate(prevProps, prevState) {
     if (this.state.xTurn !== prevState.xTurn){
       if (!this.state.xTurn) {
@@ -258,10 +226,10 @@ class Board extends React.Component {
 
        <br/>
 
-       <div id="boardControls" style={{float: "right"}}>
+       <div id="boardControls">
         <button onClick={() => this.newGame()}>New Game</button>
         <br/>
-        <label htmlFor="numCells">Choose the board size:</label>
+        <label class="controlDesc" htmlFor="numCells">Choose the board size:</label>
         <br/>
         <select
           name="numCells"
@@ -272,7 +240,7 @@ class Board extends React.Component {
           {numCellsOptions}
         </select>
         <br/>
-        Change the type of board:
+        <span class="controlDesc">Change the type of board:</span>
         <br/>
         {/*choose torus board or normal board*/}
         <button onClick={
@@ -280,6 +248,7 @@ class Board extends React.Component {
             this.setState({isTorus: false, extraBoard: false})
             : this.setState({isTorus: true})
           }
+          id="torusBoardButton"
         >
           {this.state.isTorus ? "Normal Board" : "Torus Board"}
         </button>
@@ -293,7 +262,7 @@ class Board extends React.Component {
             () => this.state.extraBoard ?
               this.setState({extraBoard: false})
               : this.setState({extraBoard: true})
-          }>
+          } id="helperBoardButton">
           Show helper board
         </button>
         : ""
