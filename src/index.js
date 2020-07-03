@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import stars from './stars.jpg';
 
 // base square for the game
 // the onClick is inherited from the Board class
@@ -212,6 +213,8 @@ class Board extends React.Component {
     }
 
     return (
+      <div id="page">
+      {/*<img id="stars" src={stars} alt="Stars Background"/>*/}
       <div id="fullBoard">
         <div id="mainBoard" style={{float: "left"}}>
         {/*display the current status of the game */}
@@ -269,6 +272,7 @@ class Board extends React.Component {
         : ""
         }
       </div>
+    </div>
     </div>
     );
   }
