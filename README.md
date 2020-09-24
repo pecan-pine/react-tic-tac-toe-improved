@@ -1,68 +1,22 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## React tic-tac-toe improved 
 
-## Available Scripts
+This app builds on the React tic-tac-toe tutorial app by adding the following functionality:
 
-In the project directory, you can run:
+- Ability to re-size the board to any size from 0x0 to 9x9.
+- For each board size, the app can tell if a game was won or tied.
+- O automatically plays using a basic strategy, and will block your moves!
+- You can use either a normal board, or play on a torus. Playing on a torus meansopposite sides of the board are identified. There is the option to show a helper board to help visualize winning moves on the torus board. 
 
-### `npm start`
+Here is a link to the app: [Tic-tac-toe app](https://pecan-pine.github.io/react-tic-tac-toe-improved/)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Basic gameplay: ![Gameplay](images/ttt1.PNG)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+With a 2x2 board, there is not very much strategy: ![2x2](images/ttt2.PNG)
 
-### `npm test`
+With a 0x0 or 1x1 board, there is even less strategy: ![1x1](images/ttt0.PNG)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Here is a winning game for O on a torus: ![torus](images/torus1.PNG)
 
-### `npm run build`
+The helper board shows O has 4 in a row diagonally: ![torus2](images/torus2.PNG)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+I hope you enjoy this app! I had fun making it. 
