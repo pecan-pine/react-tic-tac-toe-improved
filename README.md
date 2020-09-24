@@ -19,4 +19,10 @@ Here is a winning game for O on a torus: ![torus](images/torus1.PNG)
 
 The helper board shows O has 4 in a row diagonally: ![torus2](images/torus2.PNG)
 
+### Improvements:
+
+Some things I think could use improvement in the app:
+
+- Currently O's strategy is fairly predictable. It is not too hard to win, except maybe playing on a torus without the helper board.
+
 I hope you enjoy this app! I had fun making it. 
